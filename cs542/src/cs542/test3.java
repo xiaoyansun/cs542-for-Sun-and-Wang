@@ -43,8 +43,8 @@ public class test3 {
 		H[i]=8;
 	}
 	
-	//KeyValueStore.Clear();
-	//KeyValueStore.WriteMeta();
+	KeyValueStore.Clear();
+	KeyValueStore.WriteMeta();
 	
 	System.out.println("---Put data 1 (1M) into DB:");
 	KeyValueStore.Put(1,A);

@@ -52,21 +52,24 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 	
 	public void insertKey(TKey key, TValue value) {
 		int index = 0;
-		while (index < MaxEntries && this.getKey(index).compareTo(key) < 0)
+		while (this.getKey(index)!= null && 
+		index < MaxEntries && this.getKey(index).compareTo(key) < 0)
 			++index;
 		this.insertAt(index, key, value);
 	}
 	
 	private void insertAt(int index, TKey key, TValue value) {
 		//if the value at index-1 is null, insert it there without moving other keys
-		if(this.getKey(index-1).compareTo(null)==0){
+		if(index>1 && this.getKey(index-1)==null){
 			this.setKey(index-1, key);
 			this.setValue(index-1, value);
 		}		
 		// move space for the new key
-		for (int i = this.getKeyCount() - 1; i >= index; --i) {
-			this.setKey(i + 1, this.getKey(i));
-			this.setValue(i + 1, this.getValue(i));
+		if(this.getKeyCount()>1){
+			for (int i = this.getKeyCount() - 1; i >= index; --i) {
+				this.setKey(i + 1, this.getKey(i));
+				this.setValue(i + 1, this.getValue(i));
+			}
 		}
 		// insert new key and value
 		this.setKey(index, key);
@@ -80,10 +83,10 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 		this.insertKey(key, value);
 		
 		int midIndex = MaxEntries / 2;
-		while(this.getKey(midIndex).compareTo(null)==0)
+		while(this.getKey(midIndex)==null)
 			midIndex++;
 		TKey upKey = this.getKey(midIndex);
-		
+		//System.out.println(upKey);
 		btreeNode<TKey> newNode = this.split(upKey, midIndex);
 		if(newNode.isOverflow())
 			newNode= newNode.furtherHandle();
@@ -101,7 +104,7 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 			newRNode.setValue(i - midIndex, this.getValue(i));
 			this.setKey(i, null);
 			this.setValue(i, null);
-			if(this.getKey(i).compareTo(null)!=0) newRNode.keyCount++;
+			if(this.getKey(i)==null) newRNode.keyCount++;
 		};
 		this.keyCount = this.getKeyCount()-newRNode.keyCount;
 		if (this.getParent() == null) {
@@ -109,7 +112,7 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 		}
 		innerNode<TKey> theParent=(innerNode<TKey>) this.getParent();
 		newRNode.setParent(theParent);
-		theParent.insertAt(theParent.search(key),key,this,newRNode);
+		theParent.insertAt(theParent.search(key)+1,key,this,newRNode);
 		//parent might be overflowed here
 		return theParent;
 	}

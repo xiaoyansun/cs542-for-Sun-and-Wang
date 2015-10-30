@@ -33,10 +33,16 @@ public class innerNode <TKey extends Comparable<TKey>> extends btreeNode<TKey>{
 	//use binary search to find the key in a inner node
 	//return index of the next inner node
 	private int searchKey(TKey key, int j, int r){
-		if(j==r) {if(this.getKey(j).compareTo(key)<0) return j; else return j+1;}
+		if(j==r) {
+			if(j==0) return 0;
+			if(this.getKey(j).compareTo(key)<0) return j; else return j+1;}
 		int m=(j+r)/2;
-		while(this.getKey(m).compareTo(null)==0) m++;
-		if(this.getKey(m).compareTo(key)>0) return searchKey(key, m+1, r);
+		System.out.println(m+" "+j+" "+r);
+		while(this.getKey(m)==null && m<r) m++;
+			if(m==r) return searchKey(key, j,(j+r)/2);
+		if(this.getKey(m).compareTo(key)>0) 
+			return searchKey(key, m+1, r);
+		System.out.println(key+" "+j +" "+m);
 		return searchKey(key, j, m);	
 	}
 	
@@ -47,14 +53,23 @@ public class innerNode <TKey extends Comparable<TKey>> extends btreeNode<TKey>{
 	
 	//the insert function do not check overflow
 	public void insertAt(int index, TKey key,btreeNode<TKey> leftChild, btreeNode<TKey> rightChild) {
+		if(this.getKey(index)!=null){
 		// move space for the new key
-		for (int i = this.getKeyCount() + 1; i > index; --i) {
-			this.setChild(i, this.getChild(i - 1));
+			TKey k1=key;
+			while(this.getKey(index+1)!=null){
+				TKey k2 =this.getKey(index);
+				this.setKey(index, k1);
+				k1 = k2;
+				index++;
+			}
+			//child*********************************************************88	
+			for (int i = this.getKeyCount() + 1; i > index; i--) {
+				this.setChild(i, this.getChild(i - 1));
+			}
+			for (int i = this.getKeyCount(); i > index; i--) {
+				this.setKey(i, this.getKey(i - 1));
+			}
 		}
-		for (int i = this.getKeyCount(); i > index; --i) {
-			this.setKey(i, this.getKey(i - 1));
-		}
-		
 		// insert the new key
 		this.setKey(index, key);
 		this.setChild(index, leftChild);

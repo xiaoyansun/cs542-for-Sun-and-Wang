@@ -33,7 +33,9 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 	
 	@Override
 	public int search(TKey key) {
+		System.out.println(NumOfEntries);
 		return searchKey(key,0,NumOfEntries);
+		
 	}
 	
 	//use binary search to find the key in a leaf node
@@ -45,17 +47,19 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 			else System.out.println("Key cannot be found!");
 		} 
 		int m=(j+r)/2;
-		if(this.getKey(m).compareTo(null)==0) m++;
-		if(this.getKey(m).compareTo(key)>0) return searchKey(key, m+1, r);
-		return searchKey(key, j, m);	
+		if(this.getKey(m)==null) m++;
+		if(this.getKey(m).compareTo(key)>0) 
+			return searchKey(key, m+1, r);
+		return searchKey(key, j, m);
+		
 	}
 	
 	public void insertKey(TKey key, TValue value) {
 		int index = 0;
-		while (this.getKey(index)!= null && 
-		index < MaxEntries && this.getKey(index).compareTo(key) < 0)
+		while (this.getKey(index)!= null && index < MaxEntries && this.getKey(index).compareTo(key) < 0)
 			++index;
 		this.insertAt(index, key, value);
+		System.out.println(index+" "+key+" "+value);
 	}
 	
 	private void insertAt(int index, TKey key, TValue value) {
@@ -63,6 +67,7 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 		if(index>1 && this.getKey(index-1)==null){
 			this.setKey(index-1, key);
 			this.setValue(index-1, value);
+			//System.out.println("insertat");
 		}		
 		// move space for the new key
 		if(this.getKeyCount()>1){
@@ -86,11 +91,10 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 		while(this.getKey(midIndex)==null)
 			midIndex++;
 		TKey upKey = this.getKey(midIndex);
-		//System.out.println(upKey);
+		//System.out.println(upKey+" "+midIndex);
 		btreeNode<TKey> newNode = this.split(upKey, midIndex);
 		if(newNode.isOverflow())
 			newNode= newNode.furtherHandle();
-		
 		return newNode;
 
 	}
@@ -104,7 +108,8 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 			newRNode.setValue(i - midIndex, this.getValue(i));
 			this.setKey(i, null);
 			this.setValue(i, null);
-			if(this.getKey(i)==null) newRNode.keyCount++;
+			if(this.getKey(i)==null) 
+				newRNode.keyCount++;
 		};
 		this.keyCount = this.getKeyCount()-newRNode.keyCount;
 		if (this.getParent() == null) {
@@ -112,7 +117,8 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 		}
 		innerNode<TKey> theParent=(innerNode<TKey>) this.getParent();
 		newRNode.setParent(theParent);
-		theParent.insertAt(theParent.search(key)+1,key,this,newRNode);
+		//这里search（key）没有加一，但是不确定对不对＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+		theParent.insertAt(theParent.search(key),key,this,newRNode);
 		//parent might be overflowed here
 		return theParent;
 	}

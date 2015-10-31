@@ -13,11 +13,11 @@ public class test1 {
 		tree.insert(145);
 		tree.insert(19);
 		tree.insert(24);
-		
 		tree.insert(10);
 		tree.insert(210);
 		tree.insert(17);
 		tree.insert(20);
+//		tree.search(24);
 	return;
 	}
 }

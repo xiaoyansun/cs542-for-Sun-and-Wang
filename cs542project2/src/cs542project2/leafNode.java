@@ -31,6 +31,10 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 		return this.getKeyCount() == NumOfEntries;
 	}
 	
+	public boolean hasChild(){
+		return false;
+	}
+	
 	@Override
 	public int search(TKey key) {
 		return searchKey(key,0,NumOfEntries);
@@ -105,16 +109,23 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 			this.setKey(i, null);
 			this.setValue(i, null);
 			if(this.getKey(i)==null) newRNode.keyCount++;
-		};
+		}
 		this.keyCount = this.getKeyCount()-newRNode.keyCount;
 		if (this.getParent() == null) {
 			this.setParent(new innerNode<TKey>());
 		}
 		innerNode<TKey> theParent=(innerNode<TKey>) this.getParent();
 		newRNode.setParent(theParent);
-		theParent.insertAt(theParent.search(key)+1,key,this,newRNode);
+		theParent.insertAt(theParent.search(key),key,this,newRNode);
 		//parent might be overflowed here
 		return theParent;
+	}
+	
+	public void printNode(){
+		for(int i=0;i<MaxEntries;i++){
+			System.out.println((Integer)this.getKey(i)+"  "+(Integer)this.getValue(i));
+			//System.out.println((Integer)this.getValue(i));
+		}
 	}
 	
 }

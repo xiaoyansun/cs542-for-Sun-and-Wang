@@ -41,6 +41,7 @@ abstract class btreeNode<TKey extends Comparable<TKey>> {
 	}	
 	
 	public abstract TreeNodeType getNodeType();
+	public abstract boolean hasChild();
 	
 	
 	/**
@@ -72,5 +73,7 @@ abstract class btreeNode<TKey extends Comparable<TKey>> {
 		
 		return newNode.furtherHandle();
 	}
+	
+	abstract public void printNode();
 
 }

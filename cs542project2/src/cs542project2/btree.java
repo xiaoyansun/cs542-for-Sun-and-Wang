@@ -30,10 +30,19 @@ public class btree<TKey extends Comparable<TKey>, TValue> {
 		leafNode<TKey, TValue> leaf = this.findTheLeaf(key);
 		if (leaf.isFull()) {
 			btreeNode<TKey> n = leaf.handleOverflow(key,value);
-			//if (n.getParent()== null)
-			//	this.root = n; 
+			if (n.getParent()== null)
+				this.root = n; 
 		}
 		else 
 			leaf.insertKey(key, value);
+	}
+	
+	public void printTree(){
+		this.root.printNode();
+		//btreeNode<TKey> newNode= new btreeNode<TKey>() ;
+		
+			this.root.hasChild();		
+			
+		
 	}
 }

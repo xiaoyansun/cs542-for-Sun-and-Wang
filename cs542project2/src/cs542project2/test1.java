@@ -10,14 +10,19 @@ public class test1 {
 		tree.insert(37);
 		tree.insert(150);
 		tree.insert(35);
+		
 		tree.insert(145);
+		//tree.printTree();
 		tree.insert(19);
 		tree.insert(24);
 		
 		tree.insert(10);
+		
 		tree.insert(210);
 		tree.insert(17);
+		tree.printTree();
 		tree.insert(20);
+		//tree.printTree();
 	return;
 	}
 }

@@ -17,7 +17,7 @@ public class test1 extends btree<String, String> {
 		// test for the btree on assignment4
 		StringBuffer sb = new StringBuffer();
 		try {
-		br = new BufferedReader(new FileReader("test1//movies.txt"));
+		br = new BufferedReader(new FileReader("testTxtFile//movies.txt"));
 		try {
 			s = br.readLine();
 			while(s != null){

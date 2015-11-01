@@ -144,5 +144,44 @@ public class innerNode <TKey extends Comparable<TKey>> extends btreeNode<TKey>{
 		}
 		return false;
 	}
-
+	
+	public int delete(TKey key){
+		int i=this.search(key);
+		this.setKey(i, null);
+		this.setChild(i+1,null);
+		this.keyCount--;
+		if(this.keyCount==0){
+			btreeNode<TKey> upperNode = new innerNode<TKey>();
+			//para: inner node to be deleted, return the highest ancestor that is not deleted 
+			//upperNode=this.furtherDelete(this.getParent(), key);
+			upperNode=((innerNode<TKey>) this.getParent()).furtherDelete(key);
+			if(upperNode==null)
+			 return -1;
+			return 1;
+		}
+		else return 1;
+	}
+	public btreeNode<TKey> furtherDelete(TKey key) {
+		if(this.getKeyCount()!=1){
+			return this;
+		}
+		int i=0;
+		while(i<NumOfEntries){
+			if(this.getKey(i)!=null)
+				break;
+			i++;
+		}
+		this.setKey(i, null);
+		if(this.getKey(i).compareTo(key)>0)
+			this.setChild(i,null);
+		else 
+			this.setChild(i+1,null);
+		btreeNode<TKey> upperNode = new innerNode<TKey>();
+		upperNode=this.getParent();
+		upperNode.keyCount--;
+		if(upperNode.keyCount==0){
+			return ((innerNode<TKey>) upperNode).furtherDelete(key);
+		}
+		return upperNode;
+	}
 }

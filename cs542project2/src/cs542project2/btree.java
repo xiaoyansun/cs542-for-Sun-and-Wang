@@ -9,6 +9,16 @@ public class btree<TKey extends Comparable<TKey>, TValue> {
 		this.root = new leafNode<TKey, TValue>();
 	}
 	
+	public void Put(TKey key, TValue value){
+		this.insert(key, value);
+	}
+	public void Get(TKey key){
+		this.searchPrint(key);
+	}
+	public void Remove(TKey key){
+		this.delete(key);
+	}
+	
 	public LinkedList<TValue> search(TKey key) {
 		leafNode<TKey, TValue> leaf = this.findTheLeaf(key);
 		int index = leaf.search(key);
@@ -18,8 +28,11 @@ public class btree<TKey extends Comparable<TKey>, TValue> {
 		LinkedList<TValue> results= new LinkedList<TValue>();
 		results= this.search(key);
 		//System.out.println(results.size());
-		for(int i=0;i<results.size();i++)
-			System.out.println((String)results.get(i));
+		if(results==null) System.out.println("Key not found in index...");
+		else{
+			for(int i=0;i<results.size();i++)
+				System.out.println((String)results.get(i));
+		}
 	}
 	
 	//returns a leaf node where the key should be hold in, or in the range
@@ -56,7 +69,16 @@ public class btree<TKey extends Comparable<TKey>, TValue> {
 		//btreeNode<TKey> newNode= new btreeNode<TKey>() ;
 		
 			this.root.hasChild();		
-			
-		
+	}
+	public void delete(TKey key){
+		leafNode<TKey, TValue> leaf = this.findTheLeaf(key);
+		int index=leaf.search(key);
+		if(index==-1)
+			System.out.println("Key to be deleted not exist...");
+		else{
+			int i=leaf.deleteNode(index, key);
+			if(i==-1)
+				this.root=null;	
+		}
 	}
 }

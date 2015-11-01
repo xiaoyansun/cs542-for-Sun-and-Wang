@@ -19,13 +19,6 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 	        values[i] = new LinkedList<TValue>();
 	}
 
-	public void swaplist(Object a, Object b){
-		Object c = new Object();
-		c= a;
-		a=b;
-		b=c;
-	}
-
 
 	@SuppressWarnings("unchecked")
 	public void setValue(int index, TValue value) {
@@ -79,15 +72,24 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 			//find the next empty spot
 			int i=index;
 			while(this.getKey(i)!=null) i++;
-			for (int j = i - 1; j >= index; --j) {
-				this.setKey(j + 1, this.getKey(j));
-				this.swaplist(values[j+1], values[j]);
-				Object c= new Object();
-				c= values[j+1];
-				values[j+1]=values[j];
-				values[j]=c;
+			//allow key to be inserted at MaxEntries-1 position, for the purpose of split
+			//however, split when total number of key reaches MaxEntries
+			if(i<MaxEntries)     
+			{
+				for (int j = i - 1; j >= index; --j) {
+					this.setKey(j + 1, this.getKey(j));
+					//this.swaplist(values[j+1], values[j]);
+					Object c= new Object();
+					c= values[j+1];
+					values[j+1]=values[j];
+					values[j]=c;
+				}
 			}
-			
+			else{
+				//when positions after index are all occupied
+				//search before index
+				System.out.println("Insert Fail...");
+			}
 		}
 		
 		// insert new key and value
@@ -160,6 +162,22 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 			}
 			//System.out.println((Integer)this.getValue(i));
 		}
+	}
+	
+	public int deleteNode(int index, TKey key){
+		this.setKey(index,null);
+		this.keyCount--;
+		this.values[index]=null;
+		if(this.keyCount==0){
+			//delete the leaf, then change its parent
+			
+			innerNode<TKey> theParent= new innerNode<TKey>();
+			theParent=(innerNode<TKey>) this.getParent();
+			//return -1 when tree is null
+			return theParent.delete(key);
+			
+		}
+		return 1;
 	}
 }
 

@@ -66,7 +66,9 @@ public class test_movies {
 			//System.out.println(tree.search(2));
 			//System.out.println(tree.search(20));
 			//System.out.println(tree.search(18));
-			tree.searchPrint(1997);
+			tree.searchPrint(1989);
+			tree.delete(1989);
+			tree.searchPrint(1989);
 			
 		return;
 		}

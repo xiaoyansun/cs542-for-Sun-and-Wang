@@ -1,52 +1,60 @@
 package cs542project2;
 
-public class test1 {
-	public static void main(String args[]){
-		IntegerBTree tree = new IntegerBTree();
-		
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class test1 extends btree<String, String> {
+	static String[] title;
+	static String[] year;
+	static String[] format;
+	private static BufferedReader br;
+	static String s;
+	static String[] str;
+	
+	public static void main(String[] args) {
 		// test for the btree on assignment4
-		tree.insert(1);
-		tree.insert(78);
-		tree.insert(37);
-		tree.insert(150);
-		tree.insert(35);
-		
-		tree.insert(145);
-		//tree.printTree();
-		tree.insert(19);
-		tree.insert(24);
-		tree.insert(10);
-		tree.insert(210);
-		
-		tree.insert(2);
-		tree.insert(18);
-		tree.insert(20);
-		tree.insert(22);
-		tree.insert(216);
-		
-		tree.insert(79);
-		tree.insert(90);
-		tree.insert(102);
-		tree.insert(17);
-		tree.insert(20);
-		tree.insert(95);
-		//tree.insert(21);
-		//tree.insert(5);
-		//tree.insert(4);
-		
-		//tree.printTree();
-		System.out.println(tree.search(79));
-		System.out.println(tree.search(90));
-		System.out.println(tree.search(2));
-		System.out.println(tree.search(20));
-		System.out.println(tree.search(18));
-		System.out.println(tree.search(50));
-		
-	return;
-	}
+		StringBuffer sb = new StringBuffer();
+		try {
+		br = new BufferedReader(new FileReader("test1//movies.txt"));
+		try {
+			s = br.readLine();
+			while(s != null){
+	            sb.append(s);
+	            s = br.readLine();
+	        }
+	        s = sb.toString();
+	        str = s.split(",");
+	        title = new String[50];
+	        year = new String[50];
+	        format = new String[50];
+	        btree<String, String> tree = new btree<>();
+	        for(int i=0,j=0;i<450;){
+	        	title[j] = str[i];
+	        	year[j] = str[i+1];
+	        	format[j] = str[i+2];
+	        	i=i+10;	
+	        	tree.Put(year[j]+"|"+format[j],title[j]);
+	        	j=j+1;
+	        }
+	        //tree.printTree();
+	        System.out.println("************************************");
+	        System.out.println("1997|DVD");
+	        tree.Get("1997|DVD");
+	        System.out.println("************************************");
+	        System.out.println("1990|VHS");
+	        tree.Get("1990|VHS");
+	        System.out.println("************************************");
+	        System.out.println("2001|DVD");
+	        tree.Get("2001|DVD");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 }
-class IntegerBTree extends btree<Integer, Integer> {
-	public void insert(int key) {
-		this.insert(key, key);
-	}
 }

@@ -5,9 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class test2 extends btree<String, String> {
+public class test2 extends btree<Integer, String> {
 	static String[] title;
-	static String[] year;
+	static Integer[] year;
 	static String[] format;
 	private static BufferedReader br;
 	static String s;
@@ -27,27 +27,27 @@ public class test2 extends btree<String, String> {
 	        s = sb.toString();
 	        str = s.split(",");
 	        title = new String[50];
-	        year = new String[50];
+	        year = new Integer[50];
 	        format = new String[50];
-	        btree<String, String> tree = new btree<>();
+	        btree<Integer, String> tree = new btree<>();
 	        for(int i=0,j=0;i<450;){
 	        	title[j] = str[i];
-	        	year[j] = str[i+1];
+	        	year[j] = Integer.parseInt(str[i+1]);
 	        	format[j] = str[i+2];
 	        	i=i+10;	
-	        	tree.insert(year[j]+"|"+format[j],title[j]);
+	        	tree.Put(year[j],title[j]);
 	        	j=j+1;
 	        }
 	        //tree.printTree();
 	        System.out.println("************************************");
-	        System.out.println("1997|DVD");
-	        tree.searchPrint("1997|DVD");
+	        System.out.println("2000");
+	        tree.Get(2000);
 	        System.out.println("************************************");
-	        System.out.println("1990|VHS");
-	        tree.searchPrint("1990|VHS");
+	        System.out.println("2005");
+	        tree.Get(2005);
 	        System.out.println("************************************");
-	        System.out.println("2001|DVD");
-	        tree.searchPrint("2001|DVD");
+	        System.out.println("2010");
+	        tree.Get(2010);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

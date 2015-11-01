@@ -51,14 +51,16 @@ public class innerNode <TKey extends Comparable<TKey>> extends btreeNode<TKey>{
 	@Override
 	public int search(TKey key) {
 		//return searchKey(key,0,NumOfEntries);
+		int flag=0;
 		for(int i=0; i<MaxEntries; i++){
+			//System.out.println("+++++++++++++++"+this.getKey(i));
 			if(this.getKey(i)==null) continue;
 			if(this.getKey(i).compareTo(key)>0 && i==0) return 0;
-			if(this.getKey(i).compareTo(key)<0) continue;
+			if(this.getKey(i).compareTo(key)<0) {flag=i+1;continue;}
 			if(this.getKey(i).compareTo(key)>0) return i;  
 		}
-		//System.out.println("error: innerNode no Key");
-		return 0;
+		//System.out.println("error: innerNode no Key"); 
+		return flag;
 		
 	}
 	
@@ -79,32 +81,39 @@ public class innerNode <TKey extends Comparable<TKey>> extends btreeNode<TKey>{
 			this.setChild(index, leftChild);
 			this.setChild(index+1, rightChild);
 			index++;
-			
-			while(this.getKey(index)!=null){
+			//System.out.println("++++++"+index);
+			while(index<NumOfEntries && this.getKey(index)!=null){
 				TKey k2=this.getKey(index);
 				btreeNode <TKey> rightC2= this.getChild(index+1);
 				this.setKey(index, k1);
 				this.setChild(index+1, rightC);
 				k1=k2;
 				rightC=rightC2;
+				index++;
 			}
+			//System.out.println("++++++++$#$"+index);
 			this.setKey(index, k1);
+			
 			this.setChild(index+1, rightC);
-			this.keyCount += 1;
+
 		}
+		this.keyCount += 1;
 	}
 	
 	//note the difference between split a leaf node and an inner node
 	public btreeNode<TKey> split(TKey key, int midIndex){
 		innerNode<TKey> newRNode = new innerNode<TKey>();
-		for (int i = midIndex; i < MaxEntries; i++) {
+		for (int i = midIndex; i < MaxEntries-1; i++) {
 			newRNode.setKey(i - midIndex, this.getKey(i+1));
 			newRNode.setChild(i - midIndex, this.getChild(i+1));
 			this.setKey(i, null);
 			this.setChild(i+1, null);
-			if(this.getKey(i).compareTo(null)!=0) 
+			if(this.getKey(i)!=null) 
 				newRNode.keyCount++;
-		};
+		}
+		this.setKey(NumOfEntries, null);
+		this.setChild(NumOfEntries+1, null);
+		
 		this.keyCount = this.getKeyCount()-newRNode.keyCount;
 		if (this.getParent() == null) {
 			this.setParent(new innerNode<TKey>());

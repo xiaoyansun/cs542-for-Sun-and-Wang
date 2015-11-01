@@ -15,14 +15,33 @@ public class test1 {
 		//tree.printTree();
 		tree.insert(19);
 		tree.insert(24);
-		
 		tree.insert(10);
-		
 		tree.insert(210);
-		tree.insert(17);
-		tree.printTree();
+		
+		tree.insert(2);
+		tree.insert(18);
 		tree.insert(20);
+		tree.insert(22);
+		tree.insert(216);
+		
+		tree.insert(79);
+		tree.insert(90);
+		tree.insert(102);
+		tree.insert(17);
+		tree.insert(20);
+		tree.insert(95);
+		//tree.insert(21);
+		//tree.insert(5);
+		//tree.insert(4);
+		
 		//tree.printTree();
+		System.out.println(tree.search(79));
+		System.out.println(tree.search(90));
+		System.out.println(tree.search(2));
+		System.out.println(tree.search(20));
+		System.out.println(tree.search(18));
+		System.out.println(tree.search(50));
+		
 	return;
 	}
 }

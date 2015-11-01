@@ -1,5 +1,7 @@
 package cs542project2;
 
+import java.util.LinkedList;
+
 public class btree<TKey extends Comparable<TKey>, TValue> {
 	private btreeNode<TKey> root;
 	
@@ -7,10 +9,17 @@ public class btree<TKey extends Comparable<TKey>, TValue> {
 		this.root = new leafNode<TKey, TValue>();
 	}
 	
-	public TValue search(TKey key) {
+	public LinkedList<TValue> search(TKey key) {
 		leafNode<TKey, TValue> leaf = this.findTheLeaf(key);
 		int index = leaf.search(key);
 		return (index == -1) ? null : leaf.getValue(index);
+	}
+	public void searchPrint(TKey key){
+		LinkedList<TValue> results= new LinkedList<TValue>();
+		results= this.search(key);
+		//System.out.println(results.size());
+		for(int i=0;i<results.size();i++)
+			System.out.println((String)results.get(i));
 	}
 	
 	//returns a leaf node where the key should be hold in, or in the range
@@ -28,13 +37,18 @@ public class btree<TKey extends Comparable<TKey>, TValue> {
 	 */
 	public void insert(TKey key, TValue value) {
 		leafNode<TKey, TValue> leaf = this.findTheLeaf(key);
-		if (leaf.isFull()) {
+		int index=leaf.search(key);
+		if(index!=-1)
+			leaf.setValue(index, value);
+		else{
+			if (leaf.isFull()) {
 			btreeNode<TKey> n = leaf.handleOverflow(key,value);
 			if (n.getParent()== null)
 				this.root = n; 
 		}
 		else 
 			leaf.insertKey(key, value);
+		}
 	}
 	
 	public void printTree(){

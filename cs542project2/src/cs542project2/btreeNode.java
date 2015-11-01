@@ -54,7 +54,7 @@ abstract class btreeNode<TKey extends Comparable<TKey>> {
 	public abstract boolean isFull();
 	
 	public boolean isOverflow() {
-		return this.getKeyCount() == this.keys.length;
+		return this.getKeyCount() == MaxEntries;
 	}
 	
 	public abstract btreeNode<TKey> split(TKey key, int midIndex);
@@ -63,12 +63,13 @@ abstract class btreeNode<TKey extends Comparable<TKey>> {
 		if(!this.isOverflow()){
 			return this;
 		}
+		//System.out.println("here is further handle");
 		int midIndex = MaxEntries / 2;
-		while(this.getKey(midIndex).compareTo(null)==0)
+		while(this.getKey(midIndex)==null)
 			midIndex++;
 		TKey upKey = this.getKey(midIndex);
 			
-		btreeNode<TKey> newNode = this.split(upKey, midIndex);
+		btreeNode<TKey> newNode = new innerNode<TKey>();
 		newNode = this.split(upKey, midIndex);
 		
 		return newNode.furtherHandle();

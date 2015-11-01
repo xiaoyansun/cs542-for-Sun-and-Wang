@@ -1,25 +1,38 @@
 package cs542project2;
 
-class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 
+import java.util.*;
+
+
+class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 	private Object[] values;
 	protected btreeNode<TKey> nextLeaf;
 	
 	public leafNode() {
 		//one more for the entry of the next leaf
+		//LinkedList[]valuelist = new LinkedList[MaxEntries];
 		this.keys = new Object[MaxEntries];  
 		this.values = new Object[MaxEntries];
 		this.nextLeaf=null;
+		
+		for (int i=0;i<MaxEntries;i++)
+	        values[i] = new LinkedList<TValue>();
 	}
+
+	public void swaplist(Object a, Object b){
+		Object c = new Object();
+		c= a;
+		a=b;
+		b=c;
+	}
+
 
 	@SuppressWarnings("unchecked")
-	public TValue getValue(int index) {
-		return (TValue)this.values[index];
-	}
-
 	public void setValue(int index, TValue value) {
-		this.values[index] = value;
+		//System.out.println(index);
+		((LinkedList<TValue>) this.values[index]).add(value);
 	}
+	
 	
 	@Override
 	public TreeNodeType getNodeType() {
@@ -37,21 +50,13 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 	
 	@Override
 	public int search(TKey key) {
-		return searchKey(key,0,NumOfEntries);
-	}
-	
-	//use binary search to find the key in a leaf node
-	//return index of value
-	private int searchKey(TKey key, int j, int r){
-		if(j==r) {
-			if(this.getKey(j).compareTo(key)==0) 
-				return j;
-			else System.out.println("Key cannot be found!");
-		} 
-		int m=(j+r)/2;
-		if(this.getKey(m).compareTo(null)==0) m++;
-		if(this.getKey(m).compareTo(key)>0) return searchKey(key, m+1, r);
-		return searchKey(key, j, m);	
+		for(int i=0; i<NumOfEntries; i++){
+			//System.out.println("+++++++++++++++"+this.getKey(i));
+			if(this.getKey(i)==null) continue;
+			if(this.getKey(i).compareTo(key)==0) return i; 
+		}
+		//System.out.println("Key "+ key +" Not Found");
+		return -1;
 	}
 	
 	public void insertKey(TKey key, TValue value) {
@@ -62,6 +67,7 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 		this.insertAt(index, key, value);
 	}
 	
+	
 	private void insertAt(int index, TKey key, TValue value) {
 		//if the value at index-1 is null, insert it there without moving other keys
 		if(index>1 && this.getKey(index-1)==null){
@@ -69,12 +75,21 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 			this.setValue(index-1, value);
 		}		
 		// move space for the new key
-		if(this.getKeyCount()>1){
-			for (int i = this.getKeyCount() - 1; i >= index; --i) {
-				this.setKey(i + 1, this.getKey(i));
-				this.setValue(i + 1, this.getValue(i));
+		if(!this.isOverflow()){
+			//find the next empty spot
+			int i=index;
+			while(this.getKey(i)!=null) i++;
+			for (int j = i - 1; j >= index; --j) {
+				this.setKey(j + 1, this.getKey(j));
+				this.swaplist(values[j+1], values[j]);
+				Object c= new Object();
+				c= values[j+1];
+				values[j+1]=values[j];
+				values[j]=c;
 			}
+			
 		}
+		
 		// insert new key and value
 		this.setKey(index, key);
 		this.setValue(index, value);
@@ -85,13 +100,17 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 
 		//insert the new key in, overflow at this moment
 		this.insertKey(key, value);
+		//System.out.println(key);
 		
 		int midIndex = MaxEntries / 2;
 		while(this.getKey(midIndex)==null)
 			midIndex++;
 		TKey upKey = this.getKey(midIndex);
-		//System.out.println(upKey);
+		//System.out.println(upKey+" "+ midIndex);
 		btreeNode<TKey> newNode = this.split(upKey, midIndex);
+		//System.out.println("---------------");
+		//newNode.printNode();
+		//System.out.println("---------------"+newNode.keyCount);
 		if(newNode.isOverflow())
 			newNode= newNode.furtherHandle();
 		
@@ -105,27 +124,42 @@ class leafNode<TKey extends Comparable<TKey>, TValue> extends btreeNode<TKey> {
 		leafNode<TKey, TValue> newRNode = new leafNode<TKey, TValue>();
 		for (int i = midIndex; i < NumOfEntries+1; i++) {
 			newRNode.setKey(i - midIndex, this.getKey(i));
-			newRNode.setValue(i - midIndex, this.getValue(i));
+			//System.out.println("here");
+			//newRNode.setValuelist(i - midIndex, this.getValue(i));
+			Object c = new Object();
+			c=newRNode.values[i-midIndex];
+			newRNode.values[i-midIndex]=this.values[i];
+			this.values[i]=c;
 			this.setKey(i, null);
-			this.setValue(i, null);
+			////////////////////////////////////////////////////////////////////////
+			//this.setValue(i, null);
 			if(this.getKey(i)==null) newRNode.keyCount++;
 		}
 		this.keyCount = this.getKeyCount()-newRNode.keyCount;
 		if (this.getParent() == null) {
 			this.setParent(new innerNode<TKey>());
 		}
+		
 		innerNode<TKey> theParent=(innerNode<TKey>) this.getParent();
 		newRNode.setParent(theParent);
 		theParent.insertAt(theParent.search(key),key,this,newRNode);
+		
 		//parent might be overflowed here
 		return theParent;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public LinkedList<TValue> getValue(int index) {
+		return (LinkedList<TValue>) this.values[index];
+	}
 	public void printNode(){
 		for(int i=0;i<MaxEntries;i++){
-			System.out.println((Integer)this.getKey(i)+"  "+(Integer)this.getValue(i));
+			System.out.println((Integer)this.getKey(i));
+			for(int j=0;j<this.getValue(i).size();j++){
+				System.out.println(this.getValue(i).get(j));
+			}
 			//System.out.println((Integer)this.getValue(i));
 		}
 	}
-	
 }
+

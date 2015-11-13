@@ -43,5 +43,10 @@ public class tuple {
 		}
 		System.out.println();
 	}
+	public void ProjectPrint(){
+		System.out.print(others[1]+"\t");
+		//System.out.print(others[i]+"\t")
+		System.out.println();
+	}
 
 }

@@ -1,11 +1,14 @@
 package cs542project3;
 
-public class join {
+import java.util.Observable;
+
+public class join extends Observable{
 	
 	relation A= null;
 	relation B=null;
 	tuple r=null;
 	tuple l=null;
+	private tuple toSelect=null;
 	
 	public join(relation a, relation b){
 		this.A=a;
@@ -40,7 +43,13 @@ public class join {
 			s[i]=l.getOthers()[i-r.getOthers().length+1];
 		}
 		tuple newTuple= new tuple(s);
+		this.toSelect=newTuple;
 		return newTuple;
+	}
+	
+	public void GotoSelect(){
+        this.setChanged();  
+        this.notifyObservers(this.toSelect);
 	}
 	
 	public void Close(){

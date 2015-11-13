@@ -18,10 +18,11 @@ public class join {
 		r=A.GetNext();
 	}
 	public tuple GetNext(){
-		r.print();
+		//r.print();
 		do{
 			l=B.GetNext();
-			l.print();
+			//System.out.println(r.getOthers()[2]);
+			//System.out.println(l.getOthers()[0]);
 			if(l==null){
 				//B is exhausted for the current r
 				B.Close();
@@ -30,9 +31,9 @@ public class join {
 				B.Open();
 				l=B.GetNext();
 			}
-		}while(r!=null && !r.getOthers()[3].equals(l.getOthers()[0]));
+		}while(!r.getOthers()[2].equals(l.getOthers()[0]));
 		String[] s=new String[r.getOthers().length+l.getOthers().length-1];
-		System.out.println(s.length);
+		//System.out.println(s.length);
 		for(int i=0;i<r.getOthers().length;i++)
 			s[i]=r.getOthers()[i];
 		for(int i=r.getOthers().length;i<s.length;i++){

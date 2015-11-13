@@ -9,7 +9,17 @@ public class test_1 {
 		newjoin.Open();
 		
 		// result= new relation("result.csv");
-		newjoin.GetNext().print();
+		 while (true) {
+			 tuple record = newjoin.GetNext();
+			 if (record==null) {
+			 break;
+			 }
+			 
+			 if(Integer.parseInt(record.getOthers()[4])>=Integer.parseInt(record.getOthers()[10])*0.4)
+				 record.print();
+		}
 		newjoin.Close();
 	}
 }
+
+

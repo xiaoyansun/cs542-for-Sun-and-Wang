@@ -1,51 +1,59 @@
 package cs542project3;
 
+/*
+ * getOthers() method
+ * setOthers() method
+ * print() method
+ * ProjectPrint() method
+ */
 public class tuple {
-	//private String PrimaryKey;
+
 	private String[] others;
 	
-//	public tuple (String PrimaryKey, String[] others){
-//		this.PrimaryKey=PrimaryKey;
-//		this.others=others;
-//	}
+	/*
+	 * Separate a tuple into different attributes
+	 */
 	public tuple(String[] other){
-		//this.PrimaryKey=tuple.getPrimaryKey();
 		this.others=new String[other.length];
-		for(int i=0;i<other.length;i++)
-		{	
+		for(int i=0;i<other.length;i++){	
 			this.others[i]=other[i];
-			//System.out.println(this.others[3]);
 		}
 	}	
 	
 	/*
-		getters and setters 
-	*/
-//	public String getPrimaryKey() {
-//		return PrimaryKey;
-//	}
-//	public void setPrimaryKey(String primaryKey) {
-//		PrimaryKey = primaryKey;
-//	}
+	 * Get attributes
+	 */
 	public String[] getOthers() {
+		//Get attributes of different tuples
 		return others;
 	}
+	
+	/*
+	 * 
+	 * Set attributes
+	 */
 	public void setOthers(String[] others) {
 		for(int i=0;i<others.length;i++)
+			//Set attributes of different tuples
 			this.others[i]=others[i];
 	}
+
 	/*
-		methods	
-	*/
+	 * Print attributes
+	 */
 	public void print(){
+		//Print attributes of different tuples
 		for (int i=0;i<others.length;i++){
 			System.out.print(others[i]+"\t");
 		}
 		System.out.println();
 	}
+	
+	/*
+	 * Print Project Result
+	 */
 	public void ProjectPrint(){
-		System.out.print(others[1]+"\t");
-		//System.out.print(others[i]+"\t")
+		System.out.print(others[1]);
 		System.out.println();
 	}
 

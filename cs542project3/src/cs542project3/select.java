@@ -16,7 +16,7 @@ public class select implements Observer{
 		t = (tuple) arg;  
 		if(t!=null){
 			//Choose the required tuples by the condition
-			if(Integer.parseInt(t.getOthers()[4]) > Integer.parseInt(t.getOthers()[10])*0.4)
+			if(Integer.parseInt(t.getValues()[4]) > Integer.parseInt(t.getValues()[10])*0.4)
 				t.ProjectPrint();
 		}
 	}	

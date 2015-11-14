@@ -52,16 +52,16 @@ public class join extends Observable{
 				B.Open();
 				l=B.GetNext();
 			}
-		}while(!r.getOthers()[2].equals(l.getOthers()[0]));
+		}while(!r.getValues()[2].equals(l.getValues()[0]));
 		//Set new join tuples
-		String[] s=new String[r.getOthers().length+l.getOthers().length-1];
+		String[] s=new String[r.getValues().length+l.getValues().length-1];
 		//Set the first relation's new join tuples
-		for(int i=0;i<r.getOthers().length;i++){
-			s[i]=r.getOthers()[i];
+		for(int i=0;i<r.getValues().length;i++){
+			s[i]=r.getValues()[i];
 		}
 		//Set the Second relation's new join tuples
-		for(int i=r.getOthers().length;i<s.length;i++){
-			s[i]=l.getOthers()[i-r.getOthers().length+1];
+		for(int i=r.getValues().length;i<s.length;i++){
+			s[i]=l.getValues()[i-r.getValues().length+1];
 		}
 		//Create a new tuple after join
 		tuple newTuple= new tuple(s);

@@ -8,43 +8,42 @@ package cs542project3;
  */
 public class tuple {
 
-	private String[] others;
+	private String[] values;
 	
 	/*
 	 * Separate a tuple into different attributes
 	 */
 	public tuple(String[] other){
-		this.others=new String[other.length];
+		this.values=new String[other.length];
 		for(int i=0;i<other.length;i++){	
-			this.others[i]=other[i];
+			this.values[i]=other[i];
 		}
 	}	
 	
 	/*
-	 * Get attributes
+	 * Get values
 	 */
-	public String[] getOthers() {
+	public String[] getValues() {
 		//Get attributes of different tuples
-		return others;
+		return values;
 	}
 	
 	/*
 	 * 
-	 * Set attributes
+	 * Set values
 	 */
-	public void setOthers(String[] others) {
+	public void setValues(String[] others) {
 		for(int i=0;i<others.length;i++)
 			//Set attributes of different tuples
-			this.others[i]=others[i];
+			this.values[i]=others[i];
 	}
 
 	/*
-	 * Print attributes
+	 * Print the tuple
 	 */
 	public void print(){
-		//Print attributes of different tuples
-		for (int i=0;i<others.length;i++){
-			System.out.print(others[i]+"\t");
+		for (int i=0;i<values.length;i++){
+			System.out.print(values[i]+"\t");
 		}
 		System.out.println();
 	}
@@ -53,7 +52,7 @@ public class tuple {
 	 * Print Project Result
 	 */
 	public void ProjectPrint(){
-		System.out.print(others[1]);
+		System.out.print(values[1]);
 		System.out.println();
 	}
 

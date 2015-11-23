@@ -25,5 +25,12 @@ public class redotest {
 		
 		ciredo.close();
 		coredo.close();
+		
+		relation city1= new relation ("city.csv");
+		testRelations t= new testRelations(city1, city2, 4);
+		t.testPopulation();
+		relation country1= new relation ("country.csv");
+		testRelations s= new testRelations(country1, country2, 6);
+		s.testPopulation();
 	}
 }

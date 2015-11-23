@@ -14,6 +14,7 @@ import java.util.List;
 public class relation {
 	
 	private String name;
+	private tuple attribute;
 	private List<tuple> tuples= new ArrayList<tuple>();
 	private BufferedReader fileReader=null;
 	
@@ -31,13 +32,14 @@ public class relation {
 		try{
 			this.fileReader = new BufferedReader(new FileReader(this.name));
 			String line = "";
-			fileReader.readLine();
 			//Set attributes to new tuple
 			while ((line = fileReader.readLine()) != null){
                 String[] tokens = line.split(DELIMITER);
                 tuple tuple=new tuple (tokens);
                 tuples.add(tuple);
                 }
+			attribute=tuples.get(0);
+			tuples.remove(0);
 			}catch (Exception e) {
 			e.printStackTrace();
 			}
@@ -70,4 +72,22 @@ public class relation {
             e.printStackTrace();
             }
         }
+
+	public String getName() {
+		return name;
 	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public tuple getAttribute() {
+		return attribute;
+	}
+
+	public void setAttribute(tuple attribute) {
+		this.attribute = attribute;
+	}
+	
+	
+}

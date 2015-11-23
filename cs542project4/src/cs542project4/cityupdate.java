@@ -49,7 +49,7 @@ public class cityupdate {
 	        
 	        logs = new String[city.getValues().length];
 	        logs[0] = city.getValues()[0];
-	        logs[1] = "Population";
+	        logs[1] = city.getValues()[1]+"Population";
 	        logs[2] = String.valueOf(origin);
 		    logs[3] = city.getValues()[4];
 			tuple ltuple = new tuple(logs);

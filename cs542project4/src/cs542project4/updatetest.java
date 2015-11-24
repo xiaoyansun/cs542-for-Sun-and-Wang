@@ -16,11 +16,12 @@ public class updatetest {
 		ucountry.Open();
 		
 		ucity.update();
-		ucity.updateprint();
-		ucity.logprint();
-		
 		ucountry.update();
+		
+		ucity.updateprint();
 		ucountry.updateprint();
+		
+		ucity.logprint();
 		ucountry.logprint();
 		
 		ucity.close();

@@ -13,7 +13,6 @@ public class countryupdate {
 	relation B = null;
 	tuple country = null;
 	private String[] logs = null;
-	private String[] news = null;
 	private List<tuple> ltuples = new ArrayList<tuple>(); 
 	private List<tuple> utuples = new ArrayList<tuple>();
 	private File countrylog; 
@@ -38,14 +37,11 @@ public class countryupdate {
 		while(country.getValues()[6] !=null){
 			int origin = Integer.parseInt(country.getValues()[6]);
 	        int current = (int)(origin*(1+2/100.0));
-	        country.getValues()[6] = String.valueOf(current);
-	        
-	        news = new String[country.getValues().length];
-	        for(int i=0; i<country.getValues().length; i++){
-	        	news[i] = country.getValues()[i];
-	        }
-	        tuple utuple = new tuple(news);
-	        utuples.add(utuple);
+	        String[] a = country.getValues();
+	        a[6] = String.valueOf(current);
+	        country.setValues(a);
+	        B.setAttribute(country);
+	        utuples.add(country);
 	        
 	        logs = new String[country.getValues().length];
 	        logs[0] = country.getValues()[0];
@@ -76,19 +72,23 @@ public class countryupdate {
 		}
 		countryupdatewriter.close();
 		
-		countrylogwriter.write("T,X,O,N");
-		countrylogwriter.write("\n");
+		countrylogwriter.write("START\n");
+		countrylogwriter.write("T,X,O,N\n");
 		for(int i = 0; i < ltuples.size(); i++){
 			for(int j = 0; j < 4; j++){
-				if(j == 3){
-					countrylogwriter.write(ltuples.get(i).getValues()[j]);
+				if(j == 0){
+					countrylogwriter.write("<"+ltuples.get(i).getValues()[j]+",");
 				}
-				else{
+				else if(j == 3){
+					countrylogwriter.write(ltuples.get(i).getValues()[j]+">");
+				}
+				else if(j > 0){
 					countrylogwriter.write(ltuples.get(i).getValues()[j]+",");
 				}
 			}
 			countrylogwriter.write("\n");
 		}
+		countrylogwriter.write("COMMIT\n");
 		countrylogwriter.close();
 	}
 	

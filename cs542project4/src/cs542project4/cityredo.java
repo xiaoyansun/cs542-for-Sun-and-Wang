@@ -16,7 +16,6 @@ public class cityredo {
 	tuple citylog = null;
 	File city2;
 	FileWriter cityredowriter;
-	private String[] news;
 	private List<tuple> utuples = new ArrayList<tuple>();
 	private BufferedReader pcity2;
 	
@@ -34,15 +33,12 @@ public class cityredo {
 
 	public void redo() throws IOException {
 		cityredowriter = new FileWriter("city 2.csv");
-		while(cityredo.getValues()[0].equals(citylog.getValues()[0]) == true && cityredo.getValues()[4] != null ){
-			cityredo.getValues()[4] = citylog.getValues()[3];
-			
-			news = new String[cityredo.getValues().length];
-	        for(int i=0; i<cityredo.getValues().length; i++){
-	        	news[i] = cityredo.getValues()[i];
-	        }
-	        tuple utuple = new tuple(news);
-	        utuples.add(utuple);
+		citylog = logCity.GetNext();
+		while(cityredo.getValues()[0].equals(citylog.getValues()[0].substring(1)) == true && cityredo.getValues()[4] != null ){
+			String[] a = cityredo.getValues();
+			a[4] = citylog.getValues()[3].substring(0, citylog.getValues()[3].length()-1);
+			cityredo.setValues(a);
+	        utuples.add(cityredo);
 	        
 	        cityredo = C.GetNext();
 	        if(cityredo == null){

@@ -16,7 +16,6 @@ public class countryredo {
 	tuple countrylog = null;
 	File country2;
 	FileWriter countryredowriter;
-	private String[] news;
 	private List<tuple> utuples = new ArrayList<tuple>();
 	private BufferedReader pcountry2;
 	
@@ -34,16 +33,12 @@ public class countryredo {
 
 	public void redo() throws IOException {
 		countryredowriter = new FileWriter("country 2.csv");
-		
-		while(countryredo.getValues()[0].equals(countrylog.getValues()[0]) == true && countryredo.getValues()[6] != null ){
-			countryredo.getValues()[6] = countrylog.getValues()[3];
-			
-			news = new String[countryredo.getValues().length];
-	        for(int i=0; i<countryredo.getValues().length; i++){
-	        	news[i] = countryredo.getValues()[i];
-	        }
-	        tuple utuple = new tuple(news);
-	        utuples.add(utuple);
+		countrylog = logCountry.GetNext();
+		while(countryredo.getValues()[0].equals(countrylog.getValues()[0].substring(1)) == true && countryredo.getValues()[6] != null ){
+			String[] a = countryredo.getValues();
+			a[6] = countrylog.getValues()[3].substring(0, countrylog.getValues()[3].length()-1);
+			countryredo.setValues(a);
+	        utuples.add(countryredo);
 	        
 	        countryredo = D.GetNext();
 	        if(countryredo == null){

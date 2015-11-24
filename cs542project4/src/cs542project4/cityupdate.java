@@ -13,7 +13,6 @@ public class cityupdate {
 	relation A = null;
 	tuple city = null;
 	private String[] logs = null;
-	private String[] news = null;
 	private List<tuple> ltuples = new ArrayList<tuple>(); 
 	private List<tuple> utuples = new ArrayList<tuple>();
 	private File citylog; 
@@ -38,14 +37,10 @@ public class cityupdate {
 		while(city.getValues()[4] !=null){
 			int origin = Integer.parseInt(city.getValues()[4]);
 	        int current = (int)(origin*(1+2/100.0));
-	        city.getValues()[4] = String.valueOf(current);
-	        
-	        news = new String[city.getValues().length];
-	        for(int i=0; i<city.getValues().length; i++){
-	        	news[i] = city.getValues()[i];
-	        }
-	        tuple utuple = new tuple(news);
-	        utuples.add(utuple);
+	        String[] a = city.getValues();
+	        a[4] = String.valueOf(current);
+	        city.setValues(a);
+	        utuples.add(city);
 	        
 	        logs = new String[city.getValues().length];
 	        logs[0] = city.getValues()[0];
@@ -76,22 +71,23 @@ public class cityupdate {
 		}
 		cityupdatewriter.close();
 		
-		citylogwriter.write("T,X,O,N");
-		citylogwriter.write("\n");
+		citylogwriter.write("START\n");
+		citylogwriter.write("T,X,O,N\n");
 		for(int i = 0; i < ltuples.size(); i++){
 			for(int j = 0; j < 4; j++){
-				if(j == 3){
-					citylogwriter.write(ltuples.get(i).getValues()[j]);
+				if(j == 0){
+					citylogwriter.write("<"+ltuples.get(i).getValues()[j]+",");
 				}
-//				if(j == 0){
-//					citylogwriter.write("<"+ltuples.get(i).getValues()[j]+",");
-//				}
-				else{
+				else if(j == 3){
+					citylogwriter.write(ltuples.get(i).getValues()[j]+">");
+				}
+				else if(j > 0){
 					citylogwriter.write(ltuples.get(i).getValues()[j]+",");
 				}
 			}
 			citylogwriter.write("\n");
 		}
+		citylogwriter.write("COMMIT\n");
 		citylogwriter.close();
 	}
 	

@@ -33,8 +33,7 @@ public class countryredo {
 
 	public void redo() throws IOException {
 		countryredowriter = new FileWriter("country 2.csv");
-		countrylog = logCountry.GetNext();
-		while(countryredo.getValues()[0].equals(countrylog.getValues()[0].substring(1)) == true && countryredo.getValues()[6] != null ){
+		while(countryredo.getValues()[0].equals(countrylog.getValues()[1]) == true && countryredo.getValues()[6] != null ){
 			String[] a = countryredo.getValues();
 			a[6] = countrylog.getValues()[3].substring(0, countrylog.getValues()[3].length()-1);
 			countryredo.setValues(a);
@@ -68,8 +67,10 @@ public class countryredo {
 	
 	public void redoprint() throws IOException{
 		pcountry2 = new BufferedReader(new FileReader("country 2.csv"));
-		while(pcountry2.readLine() != null){
-			System.out.println(pcountry2.readLine());
+		String line=pcountry2.readLine();
+		while(line != null){
+			System.out.println(line);
+			line=pcountry2.readLine();
 		}
 	}
 	

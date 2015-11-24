@@ -18,8 +18,8 @@ public class updatetest {
 		ucity.update();
 		ucountry.update();
 		
-		ucity.updateprint();
-		ucountry.updateprint();
+		//ucity.updateprint();
+		//ucountry.updateprint();
 		
 		ucity.logprint();
 		ucountry.logprint();

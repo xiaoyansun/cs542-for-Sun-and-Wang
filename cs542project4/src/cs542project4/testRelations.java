@@ -36,5 +36,7 @@ public class testRelations {
 		}while(t!=null&&w!=null);
 		if(t==null||w==null)
 			System.out.println(a.getName()+" and "+b.getName()+" are same on attribute population..");
+		a.Close();
+		b.Close();
 	}
 }

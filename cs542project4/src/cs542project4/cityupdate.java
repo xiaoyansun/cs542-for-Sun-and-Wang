@@ -43,8 +43,8 @@ public class cityupdate {
 	        utuples.add(city);
 	        
 	        logs = new String[city.getValues().length];
-	        logs[0] = city.getValues()[0];
-	        logs[1] = city.getValues()[1]+"Population";
+	        logs[1] = city.getValues()[0];
+	        logs[0] = city.getValues()[1]+"_Population";
 	        logs[2] = String.valueOf(origin);
 		    logs[3] = city.getValues()[4];
 			tuple ltuple = new tuple(logs);
@@ -71,12 +71,12 @@ public class cityupdate {
 		}
 		cityupdatewriter.close();
 		
-		citylogwriter.write("START\n");
-		citylogwriter.write("T,X,O,N\n");
+		citylogwriter.write("<START T>\n");
+		//citylogwriter.write("T,X,O,N\n");
 		for(int i = 0; i < ltuples.size(); i++){
 			for(int j = 0; j < 4; j++){
 				if(j == 0){
-					citylogwriter.write("<"+ltuples.get(i).getValues()[j]+",");
+					citylogwriter.write("<T,");
 				}
 				else if(j == 3){
 					citylogwriter.write(ltuples.get(i).getValues()[j]+">");
@@ -87,7 +87,7 @@ public class cityupdate {
 			}
 			citylogwriter.write("\n");
 		}
-		citylogwriter.write("COMMIT\n");
+		citylogwriter.write("<COMMIT T>\n");
 		citylogwriter.close();
 	}
 	
@@ -100,8 +100,10 @@ public class cityupdate {
 	
 	public void logprint() throws IOException{
 		pcitylog = new BufferedReader(new FileReader(citylog));
-		while(pcitylog.readLine() != null){
-			System.out.println(pcitylog.readLine());
+		String line=pcitylog.readLine();
+		while( line!= null){
+			System.out.println(line);
+			line=pcitylog.readLine();
 		}
 	}
 	

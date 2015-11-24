@@ -44,8 +44,8 @@ public class countryupdate {
 	        utuples.add(country);
 	        
 	        logs = new String[country.getValues().length];
-	        logs[0] = country.getValues()[0];
-	        logs[1] = "Population";
+	        logs[1] = country.getValues()[0];
+	        logs[0] = country.getValues()[1]+"_Population";
 	        logs[2] = String.valueOf(origin);
 		    logs[3] = country.getValues()[6];
 			tuple ltuple = new tuple(logs);
@@ -72,12 +72,12 @@ public class countryupdate {
 		}
 		countryupdatewriter.close();
 		
-		countrylogwriter.write("START\n");
-		countrylogwriter.write("T,X,O,N\n");
+		countrylogwriter.write("<START T>\n");
+		//countrylogwriter.write("T,X,O,N\n");
 		for(int i = 0; i < ltuples.size(); i++){
 			for(int j = 0; j < 4; j++){
 				if(j == 0){
-					countrylogwriter.write("<"+ltuples.get(i).getValues()[j]+",");
+					countrylogwriter.write("<T,");
 				}
 				else if(j == 3){
 					countrylogwriter.write(ltuples.get(i).getValues()[j]+">");
@@ -88,7 +88,7 @@ public class countryupdate {
 			}
 			countrylogwriter.write("\n");
 		}
-		countrylogwriter.write("COMMIT\n");
+		countrylogwriter.write("<COMMIT T>\n");
 		countrylogwriter.close();
 	}
 	
@@ -101,8 +101,10 @@ public class countryupdate {
 	
 	public void logprint() throws IOException{
 		pcountrylog = new BufferedReader(new FileReader(countrylog));
-		while(pcountrylog.readLine() != null){
-			System.out.println(pcountrylog.readLine());
+		String line=pcountrylog.readLine();
+		while(line!=null){
+			System.out.println(line);
+			line=pcountrylog.readLine();
 		}
 	}
 	

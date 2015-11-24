@@ -32,9 +32,9 @@ public class cityredo {
 	}
 
 	public void redo() throws IOException {
-		cityredowriter = new FileWriter("city 2.csv");
-		citylog = logCity.GetNext();
-		while(cityredo.getValues()[0].equals(citylog.getValues()[0].substring(1)) == true && cityredo.getValues()[4] != null ){
+		cityredowriter = new FileWriter("city 2.csv");;
+		
+		while(cityredo.getValues()[0].equals(citylog.getValues()[1]) == true && cityredo.getValues()[4] != null ){
 			String[] a = cityredo.getValues();
 			a[4] = citylog.getValues()[3].substring(0, citylog.getValues()[3].length()-1);
 			cityredo.setValues(a);
@@ -68,8 +68,10 @@ public class cityredo {
 	
 	public void redoprint() throws IOException{
 		pcity2 = new BufferedReader(new FileReader("city 2.csv"));
-		while(pcity2.readLine() != null){
-			System.out.println(pcity2.readLine());
+		String line= pcity2.readLine();
+		while(line != null){
+			System.out.println(line);
+			line= pcity2.readLine();
 		}
 	}
 	
